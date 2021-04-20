@@ -2,12 +2,15 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes/index";
 
-import "./assets/styles/global.css";
+import GlobalStyles from "./assets/styles/global";
 
 const App:React.FC = () => (
-	<BrowserRouter>
-		<Routes />
-	</BrowserRouter>
+	<>
+		<BrowserRouter>
+			<Routes />
+		</BrowserRouter>
+		<GlobalStyles />
+	</>
 )
 
 export default App;
