@@ -17,6 +17,12 @@ export const useStyles = makeStyles((theme: Theme) =>
             marginTop: '30px',
             maxWidth: '97%'
         },
+        pagination: {
+            display: 'flex',
+            marginTop: '30px',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
 
         "@keyframes loadingAnimation": {
             "100%": { transform: 'rotate(1turn)' }

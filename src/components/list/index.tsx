@@ -9,6 +9,7 @@ import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import Pagination from '@material-ui/lab/Pagination';
 import TableHead from '@material-ui/core/TableHead';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -36,15 +37,22 @@ export interface Bovino {
 const List: React.FC = () => {
 
     const classes = useStyles();
+    const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
+    const [firstReq, setFirstReq] = useState<boolean>(true);
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const [listBovino, setListBovino] = useState<Bovino[]>([]);
 
     useEffect(() => {
         const request = async () => {
             try {
                 setLoading(true);
-                const response = await api.get('/bovino');
-                setListBovino(response.data);
+                if ((firstReq && listBovino.length === 0) || listBovino.length <= currentPage*6) {
+                    const response = await api.get(`/bovino?page=${currentPage}`);
+                    setFirstReq(false);
+                    setListBovino([...listBovino, ...response.data.list]);
+                    setPageCount(Math.ceil(response.data.count/6));
+                }
             } catch (error) {
                 console.log(error);
             } finally {
@@ -52,7 +60,7 @@ const List: React.FC = () => {
             }
         }
         request();
-    }, [])
+    }, [currentPage]);
 
     return (
         <div>
@@ -74,7 +82,7 @@ const List: React.FC = () => {
                 />
             </form>
             {!loading? 
-                <TableContainer component={Paper} className={classes.table}>
+                <><TableContainer component={Paper} className={classes.table}>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
@@ -89,12 +97,19 @@ const List: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {listBovino.map((bovino: Bovino) => (
+                            {listBovino.slice(currentPage*6, (currentPage*6)+6).map((bovino: Bovino) => (
                                 <Row key={bovino.id} row={bovino} />
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div className={classes.pagination}>
+                    <Pagination 
+                        count={pageCount} 
+                        page={currentPage+1} 
+                        onChange={(e, value) => setCurrentPage(value-1)} 
+                    />
+                </div></> 
                 : 
                 <div className={classes.loadingContainer}>
                     <div className={classes.loading} />
