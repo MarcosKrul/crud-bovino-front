@@ -1,9 +1,182 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 
-import {} from "./styles";
+import Bovino from "../../common/Bovino";
 
-const Create: React.FC = () => (
-    <h1>Create</h1>
-)
+import Button from '@material-ui/core/Button';
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+
+import { MdSave } from "react-icons/md";
+
+import useStyles from "./styles";
+
+const generosBovino = [
+    { value: "F", label: "Fêmea" },
+    { value: "M", label: "Macho" }
+]
+
+const Create: React.FC = () => {
+
+    const classes = useStyles();
+    const [racas, setRacas] = useState<string[]>([]);
+    const [situacoes, setSituacoes] = useState<string[]>([]);
+    const [bovino, setBovino] = useState<Bovino>({sexo: 'M'} as Bovino);
+
+    useEffect(() => {
+        const request = async () => {
+            try {
+                const response = await api.get('/selects');
+                setRacas(['Selecione', ...response.data.racas]);
+                setSituacoes(['Selecione', ...response.data.situacoes]);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        request();
+    }, []);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(bovino);
+    }
+
+    return (
+        <div className={classes.container}>
+            <h1 className={classes.title}>
+                CADASTRO DE BOVINOS
+            </h1>
+            <form className={classes.form} onSubmit={(e) => handleSubmit(e)}>
+                <TextField
+                    id="nome"
+                    label="Nome"
+                    variant="outlined"
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, nome: e.target.value})}
+                />
+                <TextField
+                    id="brinco"
+                    label="Brinco"
+                    variant="outlined"
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, brinco: e.target.value})}
+                />
+                <TextField
+                    type="date"
+                    id="nascimento"
+                    label="Nascimento"
+                    variant="outlined"
+                    className={classes.input}
+                    InputLabelProps={{ shrink: true }}
+                    onChange={(e) => setBovino({...bovino, nascimento: e.target.value})}
+                />
+                <TextField
+                    select
+                    id="raca"
+                    label="Raça"
+                    variant="outlined"
+                    value={bovino.raca}
+                    defaultValue={"Selecione"}
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, raca: e.target.value})}
+                >
+                    {racas.map((option) => (
+                        <MenuItem key={new Date().getTime()} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    select
+                    id="situacao"
+                    label="Situação"
+                    variant="outlined"
+                    value={bovino.situacao}
+                    defaultValue={"Selecione"}
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, situacao: e.target.value})}
+                >
+                    {situacoes.map((option) => (
+                        <MenuItem key={new Date().getTime()} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    select
+                    id="sexo"
+                    label="Sexo"
+                    variant="outlined"
+                    value={bovino.sexo}
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, sexo: e.target.value})}
+                >
+                    {generosBovino.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                {bovino.sexo === 'F' ? (<>
+                    <TextField
+                        type="date"
+                        id="prenhez"
+                        label="Prenhez"
+                        variant="outlined"
+                        className={classes.input}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={(e) => setBovino({
+                            ...bovino, 
+                            femea: {
+                                ...bovino.femea,
+                                prenhez: e.target.value
+                            } 
+                        })}
+                    />
+                    <TextField
+                        type="date"
+                        id="ultimo_parto"
+                        label="Último parto"
+                        variant="outlined"
+                        className={classes.input}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={(e) => setBovino({
+                            ...bovino, 
+                            femea: {
+                                ...bovino.femea,
+                                ultimo_parto: e.target.value
+                            } 
+                        })}
+                    />
+                </>) : null
+                }
+                <TextField
+                    id="brinco_mae"
+                    variant="outlined"
+                    label="Brinco da mãe"
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, brinco_mae: e.target.value})}
+                />
+                <TextField
+                    id="brinco_pai"
+                    variant="outlined"
+                    label="Brinco do pai"
+                    className={classes.input}
+                    onChange={(e) => setBovino({...bovino, brinco_pai: e.target.value})}
+                />
+                <Button
+                    size="small"
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                    className={classes.button}
+                    startIcon={ <MdSave /> }
+                >
+                    Cadastrar
+                </Button>
+            </form>
+        </div>
+    );
+}
 
 export default Create;
