@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 
 import Row from "./Row";
+import Bovino from "../../common/Bovino";
 
 import { MdSearch } from "react-icons/md";
 import Paper from '@material-ui/core/Paper';
@@ -17,22 +18,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { useStyles } from "./styles";
-
-export interface Bovino {
-    id: string;
-    nome: string;
-    raca: string;
-    sexo: string;
-    brinco: string;
-    situacao: string;
-    nascimento: Date;
-    brinco_mae?: string;
-    brinco_pai?: string;
-    femea?: {
-        prenhez?: string;
-        ultimo_parto?: string;
-    }
-}
 
 const List: React.FC = () => {
 

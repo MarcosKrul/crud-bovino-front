@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Bovino } from "./index";
+import Bovino from "../../common/Bovino";
 
 import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
