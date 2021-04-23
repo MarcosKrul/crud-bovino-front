@@ -5,6 +5,7 @@ import Row from "./Row";
 import Bovino from "../../common/Bovino";
 
 import { MdSearch } from "react-icons/md";
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow'
@@ -14,26 +15,32 @@ import Pagination from '@material-ui/lab/Pagination';
 import TableHead from '@material-ui/core/TableHead';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import TableContainer from '@material-ui/core/TableContainer';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import { useStyles } from "./styles";
+import { useStyles, AntSwitch } from "./styles";
 
 const List: React.FC = () => {
 
     const classes = useStyles();
+    const [search, setSearch] = useState<string>('');
     const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
     const [firstReq, setFirstReq] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<number>(0);
+    const [newSearch, setNewSearch] = useState<boolean>(false);
     const [listBovino, setListBovino] = useState<Bovino[]>([]);
+    const [searchByName, setSearchByName] = useState<boolean>(false);
 
     useEffect(() => {
         const request = async () => {
             try {
                 setLoading(true);
                 if ((firstReq && listBovino.length === 0) || listBovino.length <= currentPage*6) {
-                    const response = await api.get(`/bovino?page=${currentPage}`);
+                    const response = searchByName
+                        ? await api.get(`/bovino?page=${currentPage}&nome=${search.replace(' ', '-')}`)
+                        : await api.get(`/bovino?page=${currentPage}&brinco=${search.replace(' ', '-')}`);
                     setFirstReq(false);
                     setListBovino([...listBovino, ...response.data.list]);
                     setPageCount(Math.ceil(response.data.count/6));
@@ -45,7 +52,16 @@ const List: React.FC = () => {
             }
         }
         request();
-    }, [currentPage]);
+    }, [currentPage, newSearch]);
+
+
+    const handleChangeSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setPageCount(0);
+        setFirstReq(true);
+        setListBovino([]);
+        setNewSearch(!newSearch);
+    }
 
     return (
         <div>
@@ -54,17 +70,31 @@ const List: React.FC = () => {
                     id="search"
                     variant="outlined"
                     className={classes.inputSearch}
-                    label="Busca por nome ou brinco"
+                    onChange={(e) => setSearch(e.target.value)}
+                    label={searchByName? "Buscar por nome" : "Buscar por brinco"}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton type="submit" onClick={() => { }}>
+                                <IconButton type="submit" onClick={(e) => handleChangeSearch(e)}>
                                     <MdSearch size="22" />
                                 </IconButton>
                             </InputAdornment>
                         )
                     }}
                 />
+                <Typography component="div">
+                    <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid item>Brinco</Grid>
+                        <Grid item>
+                            <AntSwitch 
+                                name="searchType" 
+                                checked={searchByName} 
+                                onChange={() => setSearchByName(!searchByName)} 
+                            />
+                        </Grid>
+                        <Grid item>Nome</Grid>
+                    </Grid>
+                </Typography>
             </form>
             {!loading? 
                 <><TableContainer component={Paper} className={classes.table}>
