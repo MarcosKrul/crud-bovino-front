@@ -48,7 +48,7 @@ const List: React.FC = () => {
                     const list: Bovino[] = [...listBovino, ...response.data.list];
                     setFirstReq(false);
                     setListBovino(list);
-                    if (list.length === 0) setIsEmpty(true);
+                    list.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
                     setPageCount(Math.ceil(response.data.count/6));
                 }
             } catch (error) {
@@ -63,7 +63,7 @@ const List: React.FC = () => {
 
     const handleChangeSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setPageCount(0);
+        setCurrentPage(0);
         setFirstReq(true);
         setListBovino([]);
         setNewSearch(!newSearch);
