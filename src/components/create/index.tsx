@@ -52,6 +52,7 @@ const Create: React.FC = () => {
                     label="Nome"
                     variant="outlined"
                     className={classes.input}
+                    style={{ gridRow: '1/2', gridColumn: '1/2', justifySelf: 'end' }}
                     onChange={(e) => setBovino({...bovino, nome: e.target.value})}
                 />
                 <TextField
@@ -59,16 +60,8 @@ const Create: React.FC = () => {
                     label="Brinco"
                     variant="outlined"
                     className={classes.input}
+                    style={{ gridRow: '1/2', gridColumn: '2/3' }}
                     onChange={(e) => setBovino({...bovino, brinco: e.target.value})}
-                />
-                <TextField
-                    type="date"
-                    id="nascimento"
-                    label="Nascimento"
-                    variant="outlined"
-                    className={classes.input}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={(e) => setBovino({...bovino, nascimento: e.target.value})}
                 />
                 <TextField
                     select
@@ -78,6 +71,7 @@ const Create: React.FC = () => {
                     value={bovino.raca}
                     defaultValue={"Selecione"}
                     className={classes.input}
+                    style={{ gridRow: '2/3', gridColumn: '1/2', justifySelf: 'end' }}
                     onChange={(e) => setBovino({...bovino, raca: e.target.value})}
                 >
                     {racas.map((option) => (
@@ -94,6 +88,7 @@ const Create: React.FC = () => {
                     value={bovino.situacao}
                     defaultValue={"Selecione"}
                     className={classes.input}
+                    style={{ gridRow: '2/3', gridColumn: '2/3' }}
                     onChange={(e) => setBovino({...bovino, situacao: e.target.value})}
                 >
                     {situacoes.map((option) => (
@@ -103,12 +98,23 @@ const Create: React.FC = () => {
                     ))}
                 </TextField>
                 <TextField
+                    type="date"
+                    id="nascimento"
+                    label="Nascimento"
+                    variant="outlined"
+                    className={classes.input}
+                    InputLabelProps={{ shrink: true }}
+                    style={{ gridRow: '3/4', gridColumn: '1/2', justifySelf: 'end' }}
+                    onChange={(e) => setBovino({...bovino, nascimento: e.target.value})}
+                />
+                <TextField
                     select
                     id="sexo"
                     label="Sexo"
                     variant="outlined"
                     value={bovino.sexo}
                     className={classes.input}
+                    style={{ gridRow: '3/4', gridColumn: '2/3' }}
                     onChange={(e) => setBovino({...bovino, sexo: e.target.value})}
                 >
                     {generosBovino.map((option) => (
@@ -125,6 +131,7 @@ const Create: React.FC = () => {
                         variant="outlined"
                         className={classes.input}
                         InputLabelProps={{ shrink: true }}
+                        style={{ gridRow: '4/5', gridColumn: '1/2', justifySelf: 'end' }}
                         onChange={(e) => setBovino({
                             ...bovino, 
                             femea: {
@@ -140,6 +147,7 @@ const Create: React.FC = () => {
                         variant="outlined"
                         className={classes.input}
                         InputLabelProps={{ shrink: true }}
+                        style={{ gridRow: '4/5', gridColumn: '2/3' }}
                         onChange={(e) => setBovino({
                             ...bovino, 
                             femea: {
@@ -155,6 +163,11 @@ const Create: React.FC = () => {
                     variant="outlined"
                     label="Brinco da mãe"
                     className={classes.input}
+                    style={{ 
+                        gridColumn: '1/2', 
+                        justifySelf: 'end', 
+                        gridRow: bovino.sexo === 'F'? '5/6' : '4/5',
+                    }}
                     onChange={(e) => setBovino({...bovino, brinco_mae: e.target.value})}
                 />
                 <TextField
@@ -162,6 +175,10 @@ const Create: React.FC = () => {
                     variant="outlined"
                     label="Brinco do pai"
                     className={classes.input}
+                    style={{
+                        gridColumn: '2/3',
+                        gridRow: bovino.sexo === 'F'? '5/6' : '4/5'
+                    }}
                     onChange={(e) => setBovino({...bovino, brinco_pai: e.target.value})}
                 />
                 <Button
@@ -171,6 +188,11 @@ const Create: React.FC = () => {
                     variant="contained"
                     className={classes.button}
                     startIcon={ <MdSave /> }
+                    style={{ 
+                        gridColumn: '1/3', 
+                        justifySelf: 'center', 
+                        gridRow: bovino.sexo === 'F'? '6/7' : '5/6'
+                    }}
                 >
                     Cadastrar
                 </Button>

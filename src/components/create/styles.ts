@@ -15,10 +15,9 @@ const useStyles = makeStyles((theme: Theme) =>
         form: {
             width: '100%',
             height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            display: 'grid',
+            gridTemplateRows: 'repeat(6, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)'
         },
         input: {
             width: '60%',
@@ -33,18 +32,19 @@ const useStyles = makeStyles((theme: Theme) =>
         button: {
             width: '60%',
             margin: '20px'
+        },
+        "@media (max-width: 1000px)": {
+            input: { width: '90%' },
+            button: { width: '90%' }
+        },
+        "@media (max-width: 600px)": {
+            title: { marginLeft: '90px'},
+            button: { margin: '10px' },
+            form: {
+                display: 'flex',
+                flexDirection: 'column'
+            }
         }
-
-        // table: {
-        //     maxWidth: '97%',
-        //     marginTop: '30px',
-        // },
-        // pagination: {
-        //     display: 'flex',
-        //     marginTop: '30px',
-        //     alignItems: 'center',
-        //     justifyContent: 'center',
-        // },
 
         // "@keyframes loadingAnimation": {
         //     "100%": { transform: 'rotate(1turn)' }
