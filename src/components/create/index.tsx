@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 
 import { MdSave } from "react-icons/md";
+import { VscLoading } from "react-icons/vsc";
 
 import useStyles from "./styles";
 
@@ -20,6 +21,7 @@ const Create: React.FC = () => {
 
     const classes = useStyles();
     const [racas, setRacas] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const [situacoes, setSituacoes] = useState<string[]>([]);
     const [bovino, setBovino] = useState<Bovino>({sexo: 'M'} as Bovino);
 
@@ -39,9 +41,12 @@ const Create: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await api.post('/bovino', {...bovino, ...bovino.femea});
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -191,7 +196,7 @@ const Create: React.FC = () => {
                     color="primary"
                     variant="contained"
                     className={classes.button}
-                    startIcon={ <MdSave /> }
+                    startIcon={ loading? <VscLoading /> : <MdSave /> }
                     style={{ 
                         gridColumn: '1/3', 
                         justifySelf: 'center', 
