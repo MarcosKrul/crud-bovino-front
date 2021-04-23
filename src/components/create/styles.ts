@@ -33,9 +33,15 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '60%',
             margin: '20px'
         },
+        handleErrorSuccess: { 
+            width: '60%',
+            gridColumn: '1/3',
+            justifySelf: 'center', 
+        },
         "@media (max-width: 1000px)": {
             input: { width: '90%' },
-            button: { width: '90%' }
+            button: { width: '90%' },
+            handleErrorSuccess: { width: '90%' } 
         },
         "@media (max-width: 600px)": {
             title: { marginLeft: '90px'},

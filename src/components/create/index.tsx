@@ -3,6 +3,7 @@ import api from "../../services/api";
 
 import Bovino from "../../common/Bovino";
 
+import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -20,10 +21,21 @@ const generosBovino = [
 const Create: React.FC = () => {
 
     const classes = useStyles();
+    const [error, setError] = useState<string>('');
     const [racas, setRacas] = useState<string[]>([]);
+    const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [situacoes, setSituacoes] = useState<string[]>([]);
-    const [bovino, setBovino] = useState<Bovino>({sexo: 'M'} as Bovino);
+    const [bovino, setBovino] = useState<Bovino>({
+        sexo: 'M', 
+        raca: 'Selecione',
+        situacao: 'Selecione'
+    } as Bovino);
+
+    const handleSetBovino = (b: Bovino) => {
+        setBovino(b);
+        setError('');
+    }
 
     useEffect(() => {
         const request = async () => {
@@ -38,13 +50,28 @@ const Create: React.FC = () => {
         request();
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => {
+            if (success) setBovino({} as Bovino);
+            setSuccess(false);
+        }, 5000);
+    }, [success]);
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!bovino.nome) { setError("Insira o nome do bovino"); return; }
+        if (!bovino.brinco) { setError("Insira o brinco do bovino"); return; }
+        if (bovino.raca === "Selecione") { setError("Selecione a raca do bovino"); return; }
+        if (bovino.situacao === "Selecione") { setError("Selecione a situacao do bovino"); return; }
+        if (!bovino.nascimento) { setError("Insira a data de nascimento do bovino"); return; }
+        
         try {
             setLoading(true);
             await api.post('/bovino', {...bovino, ...bovino.femea});
+            setSuccess(true);
         } catch (error) {
-            console.log(error);
+            setError(error.response.data.error);
         } finally {
             setLoading(false);
         }
@@ -61,16 +88,18 @@ const Create: React.FC = () => {
                     label="Nome"
                     variant="outlined"
                     className={classes.input}
+                    error={error === "Insira o nome do bovino"}
                     style={{ gridRow: '1/2', gridColumn: '1/2', justifySelf: 'end' }}
-                    onChange={(e) => setBovino({...bovino, nome: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, nome: e.target.value})}
                 />
                 <TextField
                     id="brinco"
                     label="Brinco"
                     variant="outlined"
                     className={classes.input}
+                    error={error === "Insira o brinco do bovino"}
                     style={{ gridRow: '1/2', gridColumn: '2/3' }}
-                    onChange={(e) => setBovino({...bovino, brinco: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, brinco: e.target.value})}
                 />
                 <TextField
                     select
@@ -80,8 +109,9 @@ const Create: React.FC = () => {
                     value={bovino.raca}
                     defaultValue={"Selecione"}
                     className={classes.input}
+                    error={error === "Selecione a raca do bovino"}
                     style={{ gridRow: '2/3', gridColumn: '1/2', justifySelf: 'end' }}
-                    onChange={(e) => setBovino({...bovino, raca: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, raca: e.target.value})}
                 >
                     {racas.map((option) => (
                         <MenuItem key={new Date().getTime()} value={option}>
@@ -98,7 +128,8 @@ const Create: React.FC = () => {
                     defaultValue={"Selecione"}
                     className={classes.input}
                     style={{ gridRow: '2/3', gridColumn: '2/3' }}
-                    onChange={(e) => setBovino({...bovino, situacao: e.target.value})}
+                    error={error === "Selecione a situacao do bovino"}
+                    onChange={(e) => handleSetBovino({...bovino, situacao: e.target.value})}
                 >
                     {situacoes.map((option) => (
                         <MenuItem key={new Date().getTime()} value={option}>
@@ -113,8 +144,9 @@ const Create: React.FC = () => {
                     variant="outlined"
                     className={classes.input}
                     InputLabelProps={{ shrink: true }}
+                    error={error === "Insira a data de nascimento do bovino"}
                     style={{ gridRow: '3/4', gridColumn: '1/2', justifySelf: 'end' }}
-                    onChange={(e) => setBovino({...bovino, nascimento: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, nascimento: e.target.value})}
                 />
                 <TextField
                     select
@@ -124,7 +156,7 @@ const Create: React.FC = () => {
                     value={bovino.sexo}
                     className={classes.input}
                     style={{ gridRow: '3/4', gridColumn: '2/3' }}
-                    onChange={(e) => setBovino({...bovino, sexo: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, sexo: e.target.value})}
                 >
                     {generosBovino.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -141,7 +173,7 @@ const Create: React.FC = () => {
                         className={classes.input}
                         InputLabelProps={{ shrink: true }}
                         style={{ gridRow: '4/5', gridColumn: '1/2', justifySelf: 'end' }}
-                        onChange={(e) => setBovino({
+                        onChange={(e) => handleSetBovino({
                             ...bovino, 
                             femea: {
                                 ...bovino.femea,
@@ -157,7 +189,7 @@ const Create: React.FC = () => {
                         className={classes.input}
                         InputLabelProps={{ shrink: true }}
                         style={{ gridRow: '4/5', gridColumn: '2/3' }}
-                        onChange={(e) => setBovino({
+                        onChange={(e) => handleSetBovino({
                             ...bovino, 
                             femea: {
                                 ...bovino.femea,
@@ -177,7 +209,7 @@ const Create: React.FC = () => {
                         justifySelf: 'end', 
                         gridRow: bovino.sexo === 'F'? '5/6' : '4/5',
                     }}
-                    onChange={(e) => setBovino({...bovino, brinco_mae: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, brinco_mae: e.target.value})}
                 />
                 <TextField
                     id="brinco_pai"
@@ -188,7 +220,7 @@ const Create: React.FC = () => {
                         gridColumn: '2/3',
                         gridRow: bovino.sexo === 'F'? '5/6' : '4/5'
                     }}
-                    onChange={(e) => setBovino({...bovino, brinco_pai: e.target.value})}
+                    onChange={(e) => handleSetBovino({...bovino, brinco_pai: e.target.value})}
                 />
                 <Button
                     size="small"
@@ -205,6 +237,19 @@ const Create: React.FC = () => {
                 >
                     Cadastrar
                 </Button>
+                <div 
+                    className={classes.handleErrorSuccess} 
+                    style={{ gridRow: bovino.sexo === 'F'? '7/8' : '6/7' }}
+                >
+                    {error !== ''
+                        ? <Alert severity="error">{error}</Alert>
+                        : null
+                    }
+                    {success
+                        ? <Alert severity="success">Bovino cadastrado com sucesso!</Alert>
+                        : null
+                    }
+                </div>
             </form>
         </div>
     );
