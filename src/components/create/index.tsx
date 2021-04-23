@@ -36,9 +36,13 @@ const Create: React.FC = () => {
         request();
     }, []);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(bovino);
+        try {
+            await api.post('/bovino', {...bovino, ...bovino.femea});
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
