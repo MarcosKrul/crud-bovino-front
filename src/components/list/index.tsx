@@ -6,6 +6,7 @@ import Bovino from "../../common/Bovino";
 
 import { MdSearch } from "react-icons/md";
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow'
@@ -24,6 +25,7 @@ import { useStyles, AntSwitch } from "./styles";
 const List: React.FC = () => {
 
     const classes = useStyles();
+    const [error, setError] = useState<string>('');
     const [search, setSearch] = useState<string>('');
     const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
@@ -50,7 +52,7 @@ const List: React.FC = () => {
                     setPageCount(Math.ceil(response.data.count/6));
                 }
             } catch (error) {
-                console.log(error);
+                setError('Ocorreu um erro interno. Por favor, contate a equipe de desenvolvimento.')
             } finally {
                 setLoading(false);
             }
@@ -101,8 +103,14 @@ const List: React.FC = () => {
                 </Typography>
             </form>
             {!loading? 
-                isEmpty?
-                <div className={classes.empty}><p>Não há bovinos cadastrados</p></div>
+                error !== ''?
+                    <div className={classes.handleErrorEmpty}>
+                        <Alert severity="error">{error}</Alert>
+                    </div>
+                : isEmpty?
+                    <div className={classes.handleErrorEmpty}>
+                        <Alert severity="info">Não há bovinos cadastrados</Alert>
+                    </div>
                 : <><TableContainer component={Paper} className={classes.table}>
                     <Table aria-label="collapsible table">
                         <TableHead>

@@ -47,7 +47,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             animation: `$loadingAnimation 1s infinite`
         },
 
-        empty: {
+        handleErrorEmpty: {
             display: 'flex',
             color: '#4F4F4F',
             marginTop: '100px',
