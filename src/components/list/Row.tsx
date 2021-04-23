@@ -29,7 +29,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
         <TableRow className={classes.root}>
             <TableCell>
                 <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                    {row.sexo === 'f' 
+                    {row.sexo === 'F' 
                         ? open 
                             ? <MdArrowDropUp /> 
                             : <MdArrowDropDown />
@@ -47,7 +47,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
             <TableCell align="center">{row.brinco_mae || '-'}</TableCell>
             <TableCell align="center">{row.brinco_pai || '-'}</TableCell>
         </TableRow>
-        {row.sexo === "f" ?
+        {row.sexo === "F" ?
             <TableRow className={classes.root}>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
