@@ -27,6 +27,7 @@ const List: React.FC = () => {
     const [search, setSearch] = useState<string>('');
     const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const [firstReq, setFirstReq] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [newSearch, setNewSearch] = useState<boolean>(false);
@@ -41,8 +42,11 @@ const List: React.FC = () => {
                     const response = searchByName
                         ? await api.get(`/bovino?page=${currentPage}&nome=${search.replace(' ', '-')}`)
                         : await api.get(`/bovino?page=${currentPage}&brinco=${search.replace(' ', '-')}`);
+                    
+                    const list: Bovino[] = [...listBovino, ...response.data.list];
                     setFirstReq(false);
-                    setListBovino([...listBovino, ...response.data.list]);
+                    setListBovino(list);
+                    if (list.length === 0) setIsEmpty(true);
                     setPageCount(Math.ceil(response.data.count/6));
                 }
             } catch (error) {
@@ -97,7 +101,9 @@ const List: React.FC = () => {
                 </Typography>
             </form>
             {!loading? 
-                <><TableContainer component={Paper} className={classes.table}>
+                isEmpty?
+                <div className={classes.empty}><p>Não há bovinos cadastrados</p></div>
+                : <><TableContainer component={Paper} className={classes.table}>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>

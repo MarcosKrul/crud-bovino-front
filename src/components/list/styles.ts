@@ -45,6 +45,15 @@ export const useStyles = makeStyles((theme: Theme) =>
             borderTopColor: 'white',
             border: '15px solid blue',
             animation: `$loadingAnimation 1s infinite`
+        },
+
+        empty: {
+            display: 'flex',
+            color: '#4F4F4F',
+            marginTop: '100px',
+            fontStyle: 'italic',
+            alignItems: 'center',
+            justifyContent: 'center'
         }
     })
 );
