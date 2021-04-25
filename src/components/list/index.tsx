@@ -22,6 +22,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { useStyles, AntSwitch } from "./styles";
 
+interface IPagination {
+    page: number;
+    values: Bovino[];
+}
+
 const List: React.FC = () => {
 
     const classes = useStyles();
@@ -30,27 +35,28 @@ const List: React.FC = () => {
     const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
-    const [firstReq, setFirstReq] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [newSearch, setNewSearch] = useState<boolean>(false);
-    const [listBovino, setListBovino] = useState<Bovino[]>([]);
+    const [listBovino, setListBovino] = useState<IPagination[]>([]);
     const [searchByName, setSearchByName] = useState<boolean>(false);
 
     useEffect(() => {
         const request = async () => {
             try {
                 setLoading(true);
-                if ((firstReq && listBovino.length === 0) || listBovino.length <= currentPage*6) {
-                    const response = searchByName
-                        ? await api.get(`/bovino?page=${currentPage}&nome=${search.replace(' ', '-')}`)
-                        : await api.get(`/bovino?page=${currentPage}&brinco=${search.replace(' ', '-')}`);
-                    
-                    const list: Bovino[] = [...listBovino, ...response.data.list];
-                    setFirstReq(false);
-                    setListBovino(list);
-                    list.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
-                    setPageCount(Math.ceil(response.data.count/6));
-                }
+                const exists = listBovino.filter((item: IPagination) => (
+                    item.page === currentPage? item : null  
+                ));
+                if (exists.length !== 0) return;
+                
+                const response = await api.get(
+                    `/bovino?page=${currentPage}&${searchByName? "nome" : "brinco"}=${search.replace(' ', '-')}`
+                );
+                
+                const data: IPagination[] = [...listBovino, {page: currentPage, values: response.data.list}];
+                setListBovino(data);
+                data.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
+                setPageCount(Math.ceil(response.data.count/6));
             } catch (error) {
                 setError('Ocorreu um erro interno. Por favor, contate a equipe de desenvolvimento.')
             } finally {
@@ -64,7 +70,6 @@ const List: React.FC = () => {
     const handleChangeSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setCurrentPage(0);
-        setFirstReq(true);
         setListBovino([]);
         setNewSearch(!newSearch);
     }
@@ -126,9 +131,14 @@ const List: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {listBovino.slice(currentPage*6, (currentPage*6)+6).map((bovino: Bovino) => (
-                                <Row key={bovino.id} row={bovino} />
-                            ))}
+                            {
+                                listBovino
+                                .filter((item: IPagination) => (
+                                    item.page === currentPage? item : null
+                                ))[0]?.values.map((bovino: Bovino) => (
+                                    <Row key={bovino.id} row={bovino} />
+                                ))
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>
