@@ -29,6 +29,7 @@ interface IPagination {
 
 const List: React.FC = () => {
 
+    const offset: number = 10;
     const classes = useStyles();
     const [error, setError] = useState<string>('');
     const [search, setSearch] = useState<string>('');
@@ -48,15 +49,18 @@ const List: React.FC = () => {
                     item.page === currentPage? item : null  
                 ));
                 if (exists.length !== 0) return;
+
+                const url = "/bovino?" +
+                    `limite=${offset}&` +
+                    `page=${currentPage}&` +
+                    `${searchByName? "nome" : "brinco"}=${search.replace(' ', '-')}`;
                 
-                const response = await api.get(
-                    `/bovino?page=${currentPage}&${searchByName? "nome" : "brinco"}=${search.replace(' ', '-')}`
-                );
+                const response = await api.get(url);
                 
                 const data: IPagination[] = [...listBovino, {page: currentPage, values: response.data.list}];
                 setListBovino(data);
                 data.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
-                setPageCount(Math.ceil(response.data.count/6));
+                setPageCount(Math.ceil(response.data.count/offset));
             } catch (error) {
                 setError('Ocorreu um erro interno. Por favor, contate a equipe de desenvolvimento.')
             } finally {
