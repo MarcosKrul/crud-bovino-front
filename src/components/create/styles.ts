@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#fff',
         },
         title: {
+            width: 'auto',
             fontSize: '1.4rem',
             marginBottom: '40px'
         },
@@ -44,34 +45,14 @@ const useStyles = makeStyles((theme: Theme) =>
             handleErrorSuccess: { width: '90%' } 
         },
         "@media (max-width: 600px)": {
-            title: { marginLeft: '90px'},
             button: { margin: '10px' },
             form: {
                 display: 'flex',
-                flexDirection: 'column'
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'center'
             }
         }
-
-        // "@keyframes loadingAnimation": {
-        //     "100%": { transform: 'rotate(1turn)' }
-        // },
-
-        // loadingContainer: {
-        //     width: '97%',
-        //     height: '70vh',
-        //     display: 'flex',
-        //     flexDirection: 'row',
-        //     justifyContent: 'center',
-        // },
-        // loading: {
-        //     width: '200px',
-        //     height: '200px',
-        //     borderRadius: '50%',
-        //     alignSelf: 'center',
-        //     borderTopColor: 'white',
-        //     border: '15px solid blue',
-        //     animation: `$loadingAnimation 1s infinite`
-        // }
     })
 );
 
