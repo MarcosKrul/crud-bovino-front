@@ -39,6 +39,7 @@ const Home: React.FC = () => (
                 <ul>
                     <li>Data de prenhez</li>
                     <li>Data do último parto</li>
+                    <li>Data do próximo parto (prenhez + 9 meses)</li>
                 </ul>
             </li>
         </ul>

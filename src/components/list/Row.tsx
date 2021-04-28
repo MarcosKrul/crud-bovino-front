@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Bovino from "../../common/Bovino";
 
@@ -24,6 +24,15 @@ const Row: React.FC<Props> = ({ row }: Props) => {
 
     const classes = useRowStyles();
     const [open, setOpen] = useState<boolean>(false);
+    const [proximoParto, setProximoParto] = useState<string>('-');
+    
+    useEffect(() => {
+        if (row.femea?.prenhez) {
+            const date = new Date(row.femea?.prenhez);
+            date.setMonth(date.getMonth() + 9); 
+            setProximoParto(date.toISOString().split('T')[0].split('-').reverse().join('/'));
+        }
+    }, []);
 
     return (<>
         <TableRow className={classes.root}>
@@ -59,6 +68,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Prenhez</TableCell>
+                                        <TableCell>Próximo parto</TableCell>
                                         <TableCell>Último parto</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -68,6 +78,9 @@ const Row: React.FC<Props> = ({ row }: Props) => {
                                             ? row.femea.prenhez.toString().split('-').reverse().join('/')
                                             : '-'
                                         }
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {proximoParto}
                                     </TableCell>
                                     <TableCell>
                                         {row.femea?.ultimo_parto
