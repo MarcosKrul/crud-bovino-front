@@ -35,7 +35,7 @@ const SideBar: React.FC<Props> = ({ window, setMobile, mobile }: Props) => {
         <div>
             <div className={classes.toolbar} />
             <List>
-                <Link to="/" style={linkStyle}>
+                <Link to="/dashboard/home" style={linkStyle}>
                     <ListItem button onClick={() => setMobile(false)} key="home">
                         <ListItemIcon>
                             <MdHome />
@@ -43,7 +43,7 @@ const SideBar: React.FC<Props> = ({ window, setMobile, mobile }: Props) => {
                         <ListItemText primary="Home" />
                     </ListItem>
                 </Link>
-                <Link to="/list" style={linkStyle}>
+                <Link to="/dashboard/list" style={linkStyle}>
                     <ListItem button onClick={() => setMobile(false)} key="list">
                         <ListItemIcon>
                             <MdList />
@@ -51,7 +51,7 @@ const SideBar: React.FC<Props> = ({ window, setMobile, mobile }: Props) => {
                     <ListItemText primary="Listagem" />
                     </ListItem>
                 </Link>
-                <Link to="/create" style={linkStyle}>
+                <Link to="/dashboard/create" style={linkStyle}>
                     <ListItem button onClick={() => setMobile(false)} key="register">
                         <ListItemIcon>
                             <MdCreate />
