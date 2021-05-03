@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../hooks/auth";
 
 import Alert from '@material-ui/lab/Alert';
 import Input from "@material-ui/core/Input";
@@ -20,6 +21,9 @@ import {
 
 const Login: React.FC = () => {
 
+    const { signIn } = useAuth();
+    const history = useHistory();
+
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -32,8 +36,17 @@ const Login: React.FC = () => {
         if (!email) { setError('Por favor, informe o e-mail'); return; }
         if (!password) { setError('Por favor, informe a senha'); return; }
 
-        console.log(email);
-        console.log(password);
+        try {
+            
+            setLoading(true);
+            await signIn({email, password});
+            history.push("/dashboard/home");
+        
+        } catch (error) {
+            setError(error.response.data.error || 'Ocorreu um erro intero');
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleChangePasswd = (value: string) => {
