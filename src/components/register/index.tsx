@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import api from "../../services/api";
+import { useAuth } from "../../hooks/auth";
+import { useHistory } from "react-router-dom";
 
 import Alert from '@material-ui/lab/Alert';
 import Input from "@material-ui/core/Input";
@@ -20,6 +22,9 @@ import {
 
 const Register: React.FC = () => {
 
+    const histoy = useHistory();
+    const { signIn } = useAuth();
+
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -38,15 +43,16 @@ const Register: React.FC = () => {
         if (password !== confirmPassword) { setError('As senhas são diferentes'); return; }
 
         try {
-            setLoading(true);
 
-            const response = await api.post('/users', {
+            setLoading(true);
+            await api.post('/users', {
                 name,
                 email,
                 password,
                 confirmPassword
             });
-            console.log(response.data);
+            await signIn({ email, password });
+            histoy.push("/dashboard/home");
 
         } catch (error) {
             setError(error.response.data.error || 'Ocorreu um erro intero');
