@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.up('sm')]: {
                 display: 'none',
             }
-        }
+        },
+        signoutIcon: { "&:hover": { cursor: 'pointer' }}
     })
 );
 

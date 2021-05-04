@@ -53,7 +53,7 @@ const Header: React.FC<Props> = ({ onclick }: Props) => {
                     }}
                 >
                     Controle de Bovinos
-                    <GoSignOut onClick={handleSignOut}/>
+                    <GoSignOut className={classes.signoutIcon} onClick={handleSignOut}/>
                 </Typography>
             </Toolbar>
         </AppBar>
