@@ -1,5 +1,5 @@
 import React, { useState  } from 'react';
-import { Route } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 import PrivateRoute from "../../routes/PrivateRoute";
 import { useAuth } from "../../hooks/auth";
 
@@ -29,24 +29,27 @@ const MainPage: React.FC = (props) => {
             
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <PrivateRoute 
-                    exact 
-                    component={List}
-                    path="/dashboard/list" 
-                    isAuthenticated={isAuthenticated} 
-                />
-                <PrivateRoute 
-                    exact 
-                    component={Home}
-                    path="/dashboard/home" 
-                    isAuthenticated={isAuthenticated} 
-                />
-                <PrivateRoute 
-                    exact 
-                    component={Create}
-                    path="/dashboard/create" 
-                    isAuthenticated={isAuthenticated} 
-                />
+                <Switch>
+                    <PrivateRoute 
+                        exact 
+                        component={List}
+                        path="/dashboard/list" 
+                        isAuthenticated={isAuthenticated} 
+                    />
+                    <PrivateRoute 
+                        exact 
+                        component={Home}
+                        path="/dashboard/home" 
+                        isAuthenticated={isAuthenticated} 
+                    />
+                    <PrivateRoute 
+                        exact 
+                        component={Create}
+                        path="/dashboard/create" 
+                        isAuthenticated={isAuthenticated} 
+                    />
+                    <Redirect to="/system/notfound" />
+                </Switch>
             </main>
         </div>
     );

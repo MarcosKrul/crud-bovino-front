@@ -13,10 +13,12 @@ const Routes: React.FC = () => (
         <Redirect exact from="/auth" to="/auth/login" />
         <Redirect exact from="/dashboard" to="/dashboard/home" />
         <AuthProvider>
-            <Route path="/auth" component={AuthPage}/>
-            <Route path="/dashboard" component={MainPage}/>
+            <Switch>
+                <Route path="/auth" component={AuthPage}/>
+                <Route path="/dashboard" component={MainPage}/>
+                <Route path="/system/notfound" component={NotFound}/>
+            </Switch>
         </AuthProvider>
-        <Route component={NotFound}/>
     </Switch>
 );
 
