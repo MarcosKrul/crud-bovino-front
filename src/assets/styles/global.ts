@@ -10,4 +10,12 @@ export default createGlobalStyle`
         font-size: 18px;
         font-family: Poppins;
     }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus
+    {
+        margin-top: 5px;   
+        -webkit-box-shadow: inset 20px 20px 20px 20px white;  
+    }
 `;
