@@ -1,5 +1,7 @@
 import React, { useState  } from 'react';
 import { Route } from "react-router-dom";
+import PrivateRoute from "../../routes/PrivateRoute";
+import { useAuth } from "../../hooks/auth";
 
 import List from "../../components/list";
 import Home from "../../components/home";
@@ -14,6 +16,7 @@ import useStyles from "./styles";
 const MainPage: React.FC = (props) => {
 
     const classes = useStyles();
+    const { isAuthenticated } = useAuth();
     const [ mobileOpen, setMobileOpen ] = useState<boolean>(false);
 
     const handleDrawerToggle = () => { setMobileOpen(!mobileOpen); }
@@ -26,9 +29,24 @@ const MainPage: React.FC = (props) => {
             
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Route exact path="/dashboard/list" component={List}/>
-                <Route exact path="/dashboard/home" component={Home}/>
-                <Route exact path="/dashboard/create" component={Create}/>
+                <PrivateRoute 
+                    exact 
+                    component={List}
+                    path="/dashboard/list" 
+                    isAuthenticated={isAuthenticated} 
+                />
+                <PrivateRoute 
+                    exact 
+                    component={Home}
+                    path="/dashboard/home" 
+                    isAuthenticated={isAuthenticated} 
+                />
+                <PrivateRoute 
+                    exact 
+                    component={Create}
+                    path="/dashboard/create" 
+                    isAuthenticated={isAuthenticated} 
+                />
             </main>
         </div>
     );
