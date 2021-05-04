@@ -20,6 +20,7 @@ interface AuthState {
 
 interface AuthContextData {
     user: User;
+    isAuthenticated: boolean;
     signIn(credentials: SignInCredentials): Promise<User>;
     signOut(): void;
 }
@@ -68,6 +69,7 @@ export const AuthProvider: React.FC = ({ children }) => {
                 user: data.user,
                 signIn,
                 signOut,
+                isAuthenticated: !!data.user,
             }}
         >
             {children}
