@@ -12,14 +12,15 @@ import { MdSend } from "react-icons/md";
 
 
 import {
-    Error,
     Container,
+    HandleErrorOrSuccess
 } from "./styles";
 
 const Forgot: React.FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [success, setSuccess] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -28,11 +29,12 @@ const Forgot: React.FC = () => {
         if (!email) { setError('Por favor, informe o e-mail'); return; }
 
         try {
-            setLoading(true);
 
-            await api.post('/users/forgot', {
+            setLoading(true);
+            await api.post('/session/forgot', {
                 email
             });
+            setSuccess('Um e-mail com as instruções foi enviado!');
 
         } catch (error) {
             setError(error.response.data.error || 'Ocorreu um erro intero');
@@ -70,9 +72,14 @@ const Forgot: React.FC = () => {
                     Enviar
                 </Button>
             </form>
-            <Error>
-                {error? <Alert severity="error">{error}</Alert> : null}
-            </Error>
+            <HandleErrorOrSuccess>
+                {error
+                    ? <Alert severity="error">{error}</Alert> 
+                    : success  
+                        ? <Alert severity="success">{success}</Alert>
+                        : null
+                }
+            </HandleErrorOrSuccess>
         </Container>
     );
 }

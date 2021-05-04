@@ -24,7 +24,7 @@ export const Container = styled.div`
     }
 `
 
-export const Error = styled.div`
+export const HandleErrorOrSuccess = styled.div`
     width: 80%;
     height: 10px;
     margin-top: 10px;

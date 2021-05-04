@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import api from "../../services/api";
 
 import Alert from '@material-ui/lab/Alert';
 import Input from "@material-ui/core/Input";
@@ -23,9 +24,11 @@ interface Params {
 
 const Reset: React.FC = () => {
 
+    const history = useHistory();
     const { token } = useParams<Params>();
 
     const [error, setError] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [showPasswd, setShowPasswd] = useState<boolean>(false);
@@ -35,16 +38,20 @@ const Reset: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
+        if (!email) { setError('Por favor, informe o e-mail'); return; }
         if (!password) { setError('Por favor, informe a senha'); return; }
         if (!confirmPassword) { setError('Por favor, confirme a senha'); return; }
         if (password !== confirmPassword) { setError('As senhas são diferentes'); return; }
 
         try {
-            setLoading(true);
 
-            console.log(token);
-            console.log(password);
-            console.log(confirmPassword);
+            setLoading(true);
+            await api.post(`/session/reset/${token}`, {
+                email,
+                password,
+                confirmPassword
+            });
+            history.push('/auth/login');
 
         } catch (error) {
             setError(error.response.data.error || 'Ocorreu um erro intero');
@@ -58,6 +65,11 @@ const Reset: React.FC = () => {
         setPassword(value);
     }
 
+    const handleChangeEmail = (value: string) => {
+        setError('');
+        setEmail(value);
+    }
+
     const handleChangeConfirmPasswd = (value: string) => {
         setError('');
         setConfirmPassword(value);
@@ -67,6 +79,16 @@ const Reset: React.FC = () => {
         <Container>
             <h1>Redefinir senha</h1>
             <form id="form-reset" onSubmit={handleSubmit}>
+                <FormControl>
+                    <InputLabel htmlFor="form-reset">E-mail</InputLabel>
+                    <Input
+                        value={email}
+                        className="input"
+                        id="standard-adornment-email"
+                        error={error === 'Por favor, informe o e-mail'}
+                        onChange={(e) => handleChangeEmail(e.target.value)}
+                   />
+                </FormControl>
                 <FormControl>
                     <InputLabel htmlFor="form-reset">Senha</InputLabel>
                     <Input
