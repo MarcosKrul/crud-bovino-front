@@ -44,7 +44,7 @@ const Create: React.FC = () => {
                 setRacas(['Selecione', ...response.data.racas]);
                 setSituacoes(['Selecione', ...response.data.situacoes]);
             } catch (error) {
-                console.log(error);
+                setError("Ocorreu um erro ao carregar as informações");
             }
         }
         request();
@@ -52,7 +52,14 @@ const Create: React.FC = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            if (success) setBovino({} as Bovino);
+            if (success) setBovino({
+                nome: '',
+                sexo: 'M', 
+                brinco: '',
+                raca: 'Selecione',
+                situacao: 'Selecione',
+                nascimento: 'dd/mm/aaaa'
+            } as Bovino);
             setSuccess(false);
         }, 5000);
     }, [success]);
@@ -87,6 +94,7 @@ const Create: React.FC = () => {
                     id="nome"
                     label="Nome"
                     variant="outlined"
+                    value={bovino.nome}
                     className={classes.input}
                     error={error === "Insira o nome do bovino"}
                     style={{ gridRow: '1/2', gridColumn: '1/2', justifySelf: 'end' }}
@@ -96,6 +104,7 @@ const Create: React.FC = () => {
                     id="brinco"
                     label="Brinco"
                     variant="outlined"
+                    value={bovino.brinco}
                     className={classes.input}
                     error={error === "Insira o brinco do bovino"}
                     style={{ gridRow: '1/2', gridColumn: '2/3' }}
@@ -142,6 +151,7 @@ const Create: React.FC = () => {
                     id="nascimento"
                     label="Nascimento"
                     variant="outlined"
+                    value={bovino.nascimento}
                     className={classes.input}
                     InputLabelProps={{ shrink: true }}
                     error={error === "Insira a data de nascimento do bovino"}
@@ -241,7 +251,7 @@ const Create: React.FC = () => {
                     className={classes.handleErrorSuccess} 
                     style={{ gridRow: bovino.sexo === 'F'? '7/8' : '6/7' }}
                 >
-                    {error !== ''
+                    {error
                         ? <Alert severity="error">{error}</Alert>
                         : null
                     }

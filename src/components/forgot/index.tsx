@@ -50,7 +50,7 @@ const Forgot: React.FC = () => {
 
     return (
         <Container>
-            <h1>Recuperar senha</h1>
+            <h1>RECUPERAR SENHA</h1>
             <form id="form-forgot" onSubmit={handleSubmit}>
                 <FormControl>
                     <InputLabel htmlFor="form-forgot">E-mail</InputLabel>

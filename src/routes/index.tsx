@@ -9,6 +9,7 @@ import NotFound from "../pages/notfound";
 
 const Routes: React.FC = () => (
     <Switch>
+        <Redirect exact from="/" to="/dashboard/home" />
         <Redirect exact from="/" to="/auth/login" />
         <Redirect exact from="/auth" to="/auth/login" />
         <Redirect exact from="/dashboard" to="/dashboard/home" />

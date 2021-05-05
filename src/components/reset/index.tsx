@@ -77,7 +77,7 @@ const Reset: React.FC = () => {
 
     return (
         <Container>
-            <h1>Redefinir senha</h1>
+            <h1>REDEFINIR SENHA</h1>
             <form id="form-reset" onSubmit={handleSubmit}>
                 <FormControl>
                     <InputLabel htmlFor="form-reset">E-mail</InputLabel>
