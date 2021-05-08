@@ -128,7 +128,7 @@ const List: React.FC = () => {
                                 <TableCell>Nome</TableCell>
                                 <TableCell align="center">Brinco</TableCell>
                                 <TableCell align="center">Situação</TableCell>
-                                <TableCell align="center">Sexo</TableCell>
+                                <TableCell align="left">Sexo</TableCell>
                                 <TableCell align="center">Nascimento</TableCell>
                                 <TableCell align="center">Mãe</TableCell>
                                 <TableCell align="center">Pai</TableCell>

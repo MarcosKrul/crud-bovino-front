@@ -11,6 +11,8 @@ export default createGlobalStyle`
         font-family: Poppins;
     }
 
+    button:hover { cursor: pointer; }
+
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus
