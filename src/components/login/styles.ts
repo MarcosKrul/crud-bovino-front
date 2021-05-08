@@ -11,6 +11,7 @@ export const Container = styled.div`
     h1 { font-size: 26px; }
 
     .link {
+        width: 80%;
         color: black;
         text-decoration: none;
     }

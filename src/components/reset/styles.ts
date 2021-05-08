@@ -13,6 +13,8 @@ export const Container = styled.div`
         font-size: 26px; 
     }
 
+    @media (max-width: 400px) { h1 { font-size: 22px; } }
+
     form {
         width: 80%;
         display: flex;

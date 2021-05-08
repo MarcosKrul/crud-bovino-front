@@ -11,13 +11,13 @@ export const useStyles = makeStyles((theme: Theme) =>
             }
         },
         inputSearch: {
-            width: '97%',
+            width: '100%',
             color: 'black',
             backgroundColor: '#fff',
         },
         table: {
             marginTop: '30px',
-            maxWidth: '97%'
+            width: '100%'
         },
         pagination: {
             display: 'flex',
