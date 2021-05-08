@@ -4,6 +4,7 @@ import Bovino from "../../common/Bovino";
 
 import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
+import Modal from '@material-ui/core/Modal';
 import Collapse from '@material-ui/core/Collapse';
 import TableRow from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 import Menu from "./Menu";
+import Delete from "../delete";
 
 import { BsGear } from "react-icons/bs";
 import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
@@ -29,6 +31,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
     const [open, setOpen] = useState<boolean>(false);
     const [proximoParto, setProximoParto] = useState<string>('-');
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    const [viewDeleteModal, setViewDeleteModal] = useState<boolean>(false);
     
     useEffect(() => {
         if (row.femea?.prenhez) {
@@ -55,6 +58,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
                 <Menu 
                     anchorEl={anchorEl} 
                     handleOnClose={handleCloseMenu}
+                    setViewDeleteModal={setViewDeleteModal}
                 />
             </TableCell>
             <TableCell component="th" scope="row">
@@ -119,6 +123,18 @@ const Row: React.FC<Props> = ({ row }: Props) => {
             </TableRow>
             : null
         }
+        <Modal
+            open={viewDeleteModal}
+            className={classes.modal}
+            aria-labelledby="simple-modal-title"
+            onClose={() => setViewDeleteModal(false)}
+            aria-describedby="simple-modal-description"
+        >
+            <Delete 
+                id={row.id}
+                setViewDeleteModal={setViewDeleteModal} 
+            />
+        </Modal>
     </>);
 }
 

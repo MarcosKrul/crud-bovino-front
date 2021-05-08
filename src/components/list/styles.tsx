@@ -75,7 +75,13 @@ export const useRowStyles = makeStyles({
         width: '100%',
         padding: '0 5px',
         backgroundColor: 'white',
-    }
+    },
+    modal: {
+        display: 'flex',
+        height: '100vh',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export const AntSwitch = withStyles((theme: Theme) =>

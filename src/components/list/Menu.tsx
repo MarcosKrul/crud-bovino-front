@@ -10,9 +10,10 @@ import { MdEdit, MdDelete } from 'react-icons/md';
 interface Props {
     anchorEl: HTMLElement | null;
     handleOnClose(): void;
+    setViewDeleteModal(b: boolean): void;
 }
 
-const Menu: React.FC<Props> = ({ anchorEl, handleOnClose }) => (
+const Menu: React.FC<Props> = ({ anchorEl, handleOnClose, setViewDeleteModal }) => (
     <StyledMenu
         keepMounted
         anchorEl={anchorEl}
@@ -24,8 +25,8 @@ const Menu: React.FC<Props> = ({ anchorEl, handleOnClose }) => (
             <ListItemIcon><MdEdit fontSize="small" /></ListItemIcon>
             <ListItemText primary="Editar" />
         </StyledMenuItem>
-        <StyledMenuItem>
-            <ListItemIcon><MdDelete fontSize="small" color="red"/></ListItemIcon>
+        <StyledMenuItem onClick={() => setViewDeleteModal(true)}>
+            <ListItemIcon><MdDelete fontSize="small" /></ListItemIcon>
             <ListItemText primary="Deletar" />
         </StyledMenuItem>
     </StyledMenu>
