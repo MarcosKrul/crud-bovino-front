@@ -18,7 +18,12 @@ const generosBovino = [
     { value: "M", label: "Macho" }
 ]
 
-const Create: React.FC = () => {
+interface Props {
+    bov?: Bovino;
+    create?: boolean;
+}
+
+const Create: React.FC<Props> = ({ bov=null, create=true }) => {
 
     const classes = useStyles();
     const [error, setError] = useState<string>('');
@@ -26,7 +31,7 @@ const Create: React.FC = () => {
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [situacoes, setSituacoes] = useState<string[]>([]);
-    const [bovino, setBovino] = useState<Bovino>({
+    const [bovino, setBovino] = useState<Bovino>(bov || {
         sexo: 'M', 
         raca: 'Selecione',
         situacao: 'Selecione'
@@ -52,7 +57,7 @@ const Create: React.FC = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            if (success) setBovino({
+            if (success && create) setBovino({
                 nome: '',
                 sexo: 'M', 
                 brinco: '',
@@ -75,7 +80,9 @@ const Create: React.FC = () => {
         
         try {
             setLoading(true);
-            await api.post('/bovino', {...bovino, ...bovino.femea});
+            create
+                ? await api.post('/bovino', {...bovino, ...bovino.femea})
+                : await api.put(`/bovino/${bovino.id}`, {...bovino, ...bovino.femea});
             setSuccess(true);
         } catch (error) {
             setError(error.response.data.error);
@@ -87,7 +94,7 @@ const Create: React.FC = () => {
     return (
         <div className={classes.container}>
             <h1 className={classes.title}>
-                CADASTRO DE BOVINOS
+                {create? 'CADASTRO DE BOVINOS' : 'ATUALIZAÇÃO'}
             </h1>
             <form className={classes.form} onSubmit={(e) => handleSubmit(e)}>
                 <TextField
@@ -245,7 +252,7 @@ const Create: React.FC = () => {
                         gridRow: bovino.sexo === 'F'? '6/7' : '5/6'
                     }}
                 >
-                    Cadastrar
+                    {create? 'Cadastrar' : 'Enviar'}
                 </Button>
                 <div 
                     className={classes.handleErrorSuccess} 
@@ -256,7 +263,9 @@ const Create: React.FC = () => {
                         : null
                     }
                     {success
-                        ? <Alert severity="success">Bovino cadastrado com sucesso!</Alert>
+                        ? <Alert severity="success">
+                            {create? 'Bovino cadastrado com sucesso!' : 'Bovino atualizado com sucesso!'}
+                          </Alert>
                         : null
                     }
                 </div>

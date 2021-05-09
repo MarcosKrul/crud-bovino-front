@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 margin: theme.spacing(1),
                 width: '25ch',
             },
-            maxWidth: '100%',
+            width: '100%',
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column'
@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
             gridTemplateColumns: 'repeat(2, 1fr)'
         },
         input: {
-            width: '60%',
+            width: '80%',
+            maxWidth: '600px',
             color: 'black',
             margin: '10px',
             backgroundColor: '#fff',
@@ -31,11 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: '40px'
         },
         button: {
-            width: '60%',
+            width: '70%',
+            maxWidth: '900px',
             margin: '20px'
         },
         handleErrorSuccess: { 
-            width: '60%',
+            width: '70%',
+            maxWidth: '900px',
             gridColumn: '1/3',
             justifySelf: 'center', 
         },

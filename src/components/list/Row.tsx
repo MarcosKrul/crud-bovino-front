@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 import Menu from "./Menu";
+import Update from "../update";
 import Delete from "../delete";
 
 import { BsGear } from "react-icons/bs";
@@ -32,6 +33,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
     const [proximoParto, setProximoParto] = useState<string>('-');
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [viewDeleteModal, setViewDeleteModal] = useState<boolean>(false);
+    const [viewUpdateModal, setViewUpdateModal] = useState<boolean>(false);
     
     useEffect(() => {
         if (row.femea?.prenhez) {
@@ -59,6 +61,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
                     anchorEl={anchorEl} 
                     handleOnClose={handleCloseMenu}
                     setViewDeleteModal={setViewDeleteModal}
+                    setViewUpdateModal={setViewUpdateModal}
                 />
             </TableCell>
             <TableCell component="th" scope="row">
@@ -134,6 +137,15 @@ const Row: React.FC<Props> = ({ row }: Props) => {
                 id={row.id}
                 setViewDeleteModal={setViewDeleteModal} 
             />
+        </Modal>
+        <Modal
+            open={viewUpdateModal}
+            className={classes.modal}
+            aria-labelledby="simple-modal-title"
+            onClose={() => setViewUpdateModal(false)}
+            aria-describedby="simple-modal-description"
+        >
+            <Update bovino={row} />
         </Modal>
     </>);
 }
