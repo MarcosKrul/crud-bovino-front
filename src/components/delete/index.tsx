@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../../services/api';
 
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -27,8 +28,7 @@ const Delete: React.FC<Props> = ({ id, setViewDeleteModal }) => {
         try {
          
             setLoading(true);
-            console.log(id);
-            // deletar
+            await api.delete(`/bovino/${id}`);
             setSuccess(true);
 
         } catch (error){
