@@ -6,7 +6,9 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     background-color: #DCDCDC;
-    justify-content: center;
+    justify-content: space-evenly;
+
+    @media (max-width: 930px) { flex-direction: column; }
 `
 
 export const Card = styled.div`

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import LottieView from "react-lottie";
 import { useList } from "../../hooks/listBovino";
 
 import Row from "./Row";
 import Bovino from "../../common/Bovino";
+import loadView from "../../assets/lottieAnimations/lf30_editor_cyvdum0m.json"; 
 
 import { MdSearch } from "react-icons/md";
 import Grid from '@material-ui/core/Grid';
@@ -151,7 +153,15 @@ const List: React.FC = () => {
                 </div></> 
                 : 
                 <div className={classes.loadingContainer}>
-                    <div className={classes.loading} />
+                    <LottieView 
+                        options={{
+                            loop: true,
+                            autoplay: true,
+                            animationData: loadView
+                        }}
+                        width={700}
+                        height={700}
+                    />
                 </div>
             }
         </div>

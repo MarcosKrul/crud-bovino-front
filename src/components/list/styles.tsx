@@ -28,25 +28,12 @@ export const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
         },
 
-        "@keyframes loadingAnimation": {
-            "100%": { transform: 'rotate(1turn)' }
-        },
-
         loadingContainer: {
             width: '97%',
             height: '70vh',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-        },
-        loading: {
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            alignSelf: 'center',
-            borderTopColor: 'white',
-            border: '15px solid blue',
-            animation: `$loadingAnimation 1s infinite`
         },
 
         handleErrorEmpty: {
