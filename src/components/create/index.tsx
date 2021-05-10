@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
+import { useList } from "../../hooks/listBovino";
 
 import Bovino from "../../common/Bovino";
 
@@ -26,6 +27,7 @@ interface Props {
 const Create: React.FC<Props> = ({ bov=null, create=true }) => {
 
     const classes = useStyles();
+    const { update } = useList();
     const [error, setError] = useState<string>('');
     const [racas, setRacas] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
@@ -82,10 +84,12 @@ const Create: React.FC<Props> = ({ bov=null, create=true }) => {
             setLoading(true);
             create
                 ? await api.post('/bovino', {...bovino, ...bovino.femea})
-                : await api.put(`/bovino/${bovino.id}`, {...bovino, ...bovino.femea});
+                : bovino.id
+                    ? await update(bovino.id, {...bovino, ...bovino.femea})
+                    : setError('Ocorreu um erro interno');
             setSuccess(true);
         } catch (error) {
-            setError(error.response.data.error);
+            setError(error?.response?.data?.error);
         } finally {
             setLoading(false);
         }
