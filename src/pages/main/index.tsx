@@ -30,29 +30,29 @@ const MainPage: React.FC = (props) => {
             
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Switch>
-                    <PrivateRoute 
-                        exact 
-                        component={Home}
-                        path="/dashboard/home" 
-                        isAuthenticated={isAuthenticated} 
-                    />
-                    <PrivateRoute 
-                        exact 
-                        component={Create}
-                        path="/dashboard/create" 
-                        isAuthenticated={isAuthenticated} 
-                    />
-                    <ListBovinoProvider>
+                <ListBovinoProvider>
+                    <Switch>
+                        <PrivateRoute 
+                            exact 
+                            component={Home}
+                            path="/dashboard/home" 
+                            isAuthenticated={isAuthenticated} 
+                        />
+                        <PrivateRoute 
+                            exact 
+                            component={Create}
+                            path="/dashboard/create" 
+                            isAuthenticated={isAuthenticated} 
+                        />
                         <PrivateRoute 
                             exact 
                             component={List}
                             path="/dashboard/list" 
                             isAuthenticated={isAuthenticated} 
                         />
-                    </ListBovinoProvider>
-                    <Redirect to="/system/notfound" />
-                </Switch>
+                        <Redirect to="/system/notfound" />
+                    </Switch>
+                </ListBovinoProvider>
             </main>
         </div>
     );
