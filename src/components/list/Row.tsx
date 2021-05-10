@@ -69,6 +69,7 @@ const Row: React.FC<Props> = ({ row }: Props) => {
             </TableCell>
             <TableCell align="center">{row.brinco}</TableCell>
             <TableCell align="center">{row.situacao}</TableCell>
+            <TableCell align="center">{row.raca}</TableCell>
             <TableCell align="center">
                 <div className={classes.expandContainer}>
                     {row.sexo.toUpperCase()}
