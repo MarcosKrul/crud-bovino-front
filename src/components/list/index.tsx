@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import api from "../../services/api";
+import { useList } from "../../hooks/listBovino";
 
 import Row from "./Row";
 import Bovino from "../../common/Bovino";
@@ -29,38 +29,33 @@ interface IPagination {
 
 const List: React.FC = () => {
 
-    const offset: number = 10;
+    const { 
+        isEmpty, 
+        pageCount, 
+        listBovino, 
+        currentPage,
+        load, 
+        reset, 
+        setCurrentPage,
+    } = useList();
+
     const classes = useStyles();
     const [error, setError] = useState<string>('');
     const [search, setSearch] = useState<string>('');
-    const [pageCount, setPageCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
-    const [isEmpty, setIsEmpty] = useState<boolean>(false);
-    const [currentPage, setCurrentPage] = useState<number>(0);
     const [newSearch, setNewSearch] = useState<boolean>(false);
-    const [listBovino, setListBovino] = useState<IPagination[]>([]);
     const [searchByName, setSearchByName] = useState<boolean>(false);
 
     useEffect(() => {
         const request = async () => {
             try {
-                setLoading(true);
-                const exists = listBovino.filter((item: IPagination) => (
-                    item.page === currentPage? item : null  
-                ));
-                if (exists.length !== 0) return;
 
-                const url = "/bovino?" +
-                    `limite=${offset}&` +
-                    `page=${currentPage}&` +
-                    `${searchByName? "nome" : "brinco"}=${search.replace(' ', '-')}`;
-                
-                const response = await api.get(url);
-                
-                const data: IPagination[] = [...listBovino, {page: currentPage, values: response.data.list}];
-                setListBovino(data);
-                data.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
-                setPageCount(Math.ceil(response.data.count/offset));
+                setLoading(true);
+                await load({
+                    search,
+                    searchByName,
+                });
+
             } catch (error) {
                 setError('Ocorreu um erro interno. Por favor, contate a equipe de desenvolvimento.')
             } finally {
@@ -74,7 +69,7 @@ const List: React.FC = () => {
     const handleChangeSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setCurrentPage(0);
-        setListBovino([]);
+        reset();
         setNewSearch(!newSearch);
     }
 

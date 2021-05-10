@@ -2,6 +2,7 @@ import React, { useState  } from 'react';
 import { Redirect, Switch } from "react-router-dom";
 import PrivateRoute from "../../routes/PrivateRoute";
 import { useAuth } from "../../hooks/auth";
+import { ListBovinoProvider } from "../../hooks/listBovino";
 
 import List from "../../components/list";
 import Home from "../../components/home";
@@ -32,12 +33,6 @@ const MainPage: React.FC = (props) => {
                 <Switch>
                     <PrivateRoute 
                         exact 
-                        component={List}
-                        path="/dashboard/list" 
-                        isAuthenticated={isAuthenticated} 
-                    />
-                    <PrivateRoute 
-                        exact 
                         component={Home}
                         path="/dashboard/home" 
                         isAuthenticated={isAuthenticated} 
@@ -48,6 +43,14 @@ const MainPage: React.FC = (props) => {
                         path="/dashboard/create" 
                         isAuthenticated={isAuthenticated} 
                     />
+                    <ListBovinoProvider>
+                        <PrivateRoute 
+                            exact 
+                            component={List}
+                            path="/dashboard/list" 
+                            isAuthenticated={isAuthenticated} 
+                        />
+                    </ListBovinoProvider>
                     <Redirect to="/system/notfound" />
                 </Switch>
             </main>
