@@ -30,29 +30,31 @@ const MainPage: React.FC = (props) => {
             
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <ListBovinoProvider>
-                    <Switch>
-                        <PrivateRoute 
-                            exact 
-                            component={Home}
-                            path="/dashboard/home" 
-                            isAuthenticated={isAuthenticated} 
-                        />
-                        <PrivateRoute 
-                            exact 
-                            component={Create}
-                            path="/dashboard/create" 
-                            isAuthenticated={isAuthenticated} 
-                        />
-                        <PrivateRoute 
-                            exact 
-                            component={List}
-                            path="/dashboard/list" 
-                            isAuthenticated={isAuthenticated} 
-                        />
-                        <Redirect to="/system/notfound" />
-                    </Switch>
-                </ListBovinoProvider>
+                <Switch>
+                    <PrivateRoute 
+                        exact 
+                        component={Home}
+                        path="/dashboard/home" 
+                        isAuthenticated={isAuthenticated} 
+                    />
+                    <PrivateRoute 
+                        exact 
+                        component={Create}
+                        path="/dashboard/create" 
+                        isAuthenticated={isAuthenticated} 
+                    />
+                    <ListBovinoProvider>
+                        <Switch>
+                            <PrivateRoute 
+                                exact 
+                                component={List}
+                                path="/dashboard/list" 
+                                isAuthenticated={isAuthenticated} 
+                            />
+                            <Redirect to="/system/notfound" />
+                        </Switch>
+                    </ListBovinoProvider>
+                </Switch>
             </main>
         </div>
     );
