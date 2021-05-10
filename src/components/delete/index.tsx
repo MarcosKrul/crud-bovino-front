@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api';
+import { useList } from "../../hooks/listBovino";
 
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -18,6 +18,7 @@ interface Props {
 
 const Delete: React.FC<Props> = ({ id, setViewDeleteModal }) => {
 
+    const { remove } = useList();
     const [error, setError] = useState<string>('');
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,11 +29,15 @@ const Delete: React.FC<Props> = ({ id, setViewDeleteModal }) => {
         try {
          
             setLoading(true);
-            await api.delete(`/bovino/${id}`);
-            setSuccess(true);
+            if (id) {
+                await remove(id);
+                setSuccess(true);
+            } else {
+                setError('Ocorreu um erro interno')
+            }
 
         } catch (error){
-            setError(error.response.data.error || 'Ocorreu um erro intero');
+            setError(error?.response?.data?.error || 'Ocorreu um erro interno');
         } finally {
             setLoading(false);
         }

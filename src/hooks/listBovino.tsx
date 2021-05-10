@@ -20,6 +20,7 @@ interface ContextData {
     listBovino: ListBovino[];
     
     reset(): void;
+    remove(id: string): Promise<void>;
     setCurrentPage(page: number): void;
     load(params: LoadParams): Promise<void>;
 }
@@ -60,6 +61,27 @@ export const ListBovinoProvider: React.FC = ({ children }) => {
         setPageCount(Math.ceil(response.data.count/offset));
     }
 
+    const remove = async (id: string): Promise<void> => {
+
+        await api.delete(`/bovino/${id}`);
+
+        const isLastPage = listBovino.filter((item: ListBovino) =>
+            item.page === pageCount-1 ? item : null
+        );
+
+        if (isLastPage[0]?.values?.length === 1) {
+            setPageCount(pageCount - 1);
+            setCurrentPage(currentPage -1);
+            return;
+        }
+
+        const url = `/bovino?page=${currentPage}&limite=${offset}`;
+        const response = await api.get(url);
+
+        setListBovino([{ page: currentPage, values: response.data.list }]);
+        setPageCount(Math.ceil(response.data.count / offset));       
+    }
+
     return (
         <ListBovinoContext.Provider
             value={{ 
@@ -69,6 +91,7 @@ export const ListBovinoProvider: React.FC = ({ children }) => {
                 currentPage, 
                 load,
                 reset,
+                remove,
                 setCurrentPage,
             }}
         >
