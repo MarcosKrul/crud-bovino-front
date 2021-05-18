@@ -38,7 +38,7 @@ export const ListBovinoProvider: React.FC = ({ children }) => {
 
     const reset = () => { setListBovino([]); }
 
-    const load = async (params: LoadParams) => {
+    const load = async (params: LoadParams): Promise<void> => {
 
         const exists = listBovino.filter((item: ListBovino) => (
             item.page === currentPage? item : null  

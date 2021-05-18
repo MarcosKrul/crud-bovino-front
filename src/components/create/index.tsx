@@ -224,6 +224,7 @@ const Create: React.FC<Props> = ({ bov=null, create=true }) => {
                     id="brinco_mae"
                     variant="outlined"
                     label="Brinco da mãe"
+                    value={bovino.brinco_mae}
                     className={classes.input}
                     style={{ 
                         gridColumn: '1/2', 
@@ -236,6 +237,7 @@ const Create: React.FC<Props> = ({ bov=null, create=true }) => {
                     id="brinco_pai"
                     variant="outlined"
                     label="Brinco do pai"
+                    value={bovino.brinco_pai}
                     className={classes.input}
                     style={{
                         gridColumn: '2/3',
