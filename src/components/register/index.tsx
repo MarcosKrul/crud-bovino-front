@@ -55,7 +55,7 @@ const Register: React.FC = () => {
             histoy.push("/dashboard/home");
 
         } catch (error) {
-            setError(error.response.data.error || 'Ocorreu um erro intero');
+            setError(error.response?.data?.error || 'Ocorreu um erro intero');
         } finally {
             setLoading(false);
         }

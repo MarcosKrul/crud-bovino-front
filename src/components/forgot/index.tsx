@@ -37,7 +37,7 @@ const Forgot: React.FC = () => {
             setSuccess('Um e-mail com as instruções foi enviado!');
 
         } catch (error) {
-            setError(error.response.data.error || 'Ocorreu um erro intero');
+            setError(error.response?.data?.error || 'Ocorreu um erro intero');
         } finally {
             setLoading(false);
         }

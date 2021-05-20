@@ -54,7 +54,7 @@ const Reset: React.FC = () => {
             history.push('/auth/login');
 
         } catch (error) {
-            setError(error.response.data.error || 'Ocorreu um erro intero');
+            setError(error.response?.data?.error || 'Ocorreu um erro intero');
         } finally {
             setLoading(false);
         }
